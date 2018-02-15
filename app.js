@@ -23,6 +23,7 @@ app.use((error,req,res, next)=>{
             message:error.message
         }
     });
+    console.log("error u bomb");
 });
 
 module.exports =app;
