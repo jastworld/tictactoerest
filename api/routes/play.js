@@ -6,7 +6,7 @@ const Record = require('../../models/Record');
 
 var is_tie = function(game){
     for(i=0;i<9;i++){
-      if(game.grid[i]===' '){
+      if(game.grid[i]===" "){
         console.log("No tie space dey");
         return false;
       }
@@ -40,9 +40,9 @@ var saveRecord = function(req,game,winner){
       });
   });
 
-  game.grid = [' ',' ',' ',
-                ' ',' ',' ',
-                ' ',' ',' '];
+  game.grid = [" "," "," ",
+                " "," "," ",
+                " "," "," "];
   return true;
 };
 var checkwinner = function(game){
@@ -61,7 +61,7 @@ var checkwinner = function(game){
     //Check for vertical winner
     while(i<3){
         if(game[i]==game[i+3] && game[i]==game[i+6]){
-            if(game[i]==' ')
+            if(game[i]==" ")
                 break;
             else
                 return game[i];
@@ -74,7 +74,7 @@ var checkwinner = function(game){
         return game[0];
     if(game[2]==game[4] && game[0]==game[6])
         return game[2];
-    return ' ';
+    return " ";
 };
 
 
@@ -93,7 +93,7 @@ router.get('/',function(req,res,next){
 });
 
 router.post('/',function(req,res,next){
-    var winner=' ';
+    var winner=" ";
 
     if(req.session.user){
       console.log("You are signed in "+ req.session.user._id);
@@ -105,21 +105,21 @@ router.post('/',function(req,res,next){
         if(move > 8 || move == null || game.grid[move]!=""){
 
         }else{
-          game.grid.set(move, 'X');
+          game.grid.set(move, "X");
           //game.update();
           if(is_tie(game)){
             saveRecord(req,game,winner);
           }else if((winner = checkwinner(game.grid)) == ''){
               //Continue move
               for (let i = 0; i < 9; i++) {
-                  if(game.grid[i] === ' ') {
-                      game.grid.set(i, 'O');
+                  if(game.grid[i] === " ") {
+                      game.grid.set(i, "O");
                       break;
                   }
               }
               if(is_tie(game)){
                 saveRecord(req,game,winner);
-              }else if((winner = checkwinner(game.grid)) != ' '){
+              }else if((winner = checkwinner(game.grid)) != " "){
                   //count loss
                 saveRecord(req,game,winner);
               }

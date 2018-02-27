@@ -192,13 +192,13 @@ router.post("/getscore",function(req,res,next){
 
     if(req.session.user){
       var wins=0;
-      Record.count({ userId: req.session.user._id, winner: 'X'},(err, doc)=>{
+      Record.count({ userId: req.session.user._id, winner: "X"},(err, doc)=>{
         wins =doc;
         var draw=0;
-        Record.count({ userId: req.session.user._id, winner: ' '},(err, doc)=>{
+        Record.count({ userId: req.session.user._id, winner: " "},(err, doc)=>{
           draw =doc;
           var loss = 0;
-          Record.count({ userId: req.session.user._id, winner: 'O'},(err, doc)=>{
+          Record.count({ userId: req.session.user._id, winner: "O"},(err, doc)=>{
             loss =doc;
             return res.json({
                status:"OK",
