@@ -1,0 +1,104 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+        <title>{{ title }}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  	<p>{{name}} {{time}}</p>
+
+	<table style="border-color: green; background-color: black; width: 214px; height: 201px; margin-left: auto; margin-right: auto;" border="2">
+		<tbody>
+			<tr>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(0)" id = "td0"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(1)" id = "td1"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(2)" id = "td2"></td>
+			</tr>
+			<tr>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(3)" id = "td3"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(4)" id = "td4"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(5)" id = "td5"></td>
+			</tr>
+			<tr>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(6)" id = "td6"></td>
+				<td style="width: 50px; text-align: center; color:white " onClick="myFunction(7)" id = "td7"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(8)" id = "td8"></td>
+			</tr>
+		</tbody>
+	</table>
+<p id = "display"></p>
+
+<script>
+var grid = ["","","","","","","","",""];
+function myFunction(value) {
+
+    document.getElementById("display").innerHTML = "Hello "+ value;
+    var td1 = document.getElementById('td'+value);
+	var text = document.createTextNode("X");
+	if (td1.hasChildNodes()) {
+	    td1.removeChild(td1.childNodes[0]);
+	}
+	td1.appendChild(text);
+    grid[value]="X" ;
+    console.log(grid);
+    $.ajax({
+            url: '/getResult',
+            type: 'POST',
+            data: {grid: JSON.stringify(grid)},
+            success: function(response) {
+            	console.log("1: "+grid);
+            	console.log(response);
+                grid = response.grid;
+                console.log(grid);
+                fillTable(grid);
+                if(response.winner!=""){
+                	alert(response.winner+" is the winner");
+                	clearTable();
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+}
+
+function fillTable(grid) {
+	for (var i = 0; i < 9; i++) {
+		if(grid[i]!=""){
+			var td1 = document.getElementById('td'+i);
+			var text = document.createTextNode(grid[i]);
+			if (!td1.hasChildNodes()) {
+			    td1.appendChild(text);
+			}
+
+		}
+	}
+
+}
+function clearTable(){
+	for (var i = 0; i < 9; i++) {
+		var td1 = document.getElementById('td'+i);
+		var text = document.createTextNode("");
+		if (td1.hasChildNodes()) {
+		    td1.removeChild(td1.childNodes[0]);
+		}
+
+	}
+	grid = ["","","","","","","","",""];
+}
+
+
+</script>
+
+</body>
+</html>
