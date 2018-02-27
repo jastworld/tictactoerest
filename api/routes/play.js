@@ -102,14 +102,14 @@ router.post('/',function(req,res,next){
         //var currentGame = game.grid;
         var move = req.body.move;
         //Life saver
-        if(move > 8 || move == null || game.grid[move]!=""){
+        if(move > 8 || move == null || game.grid[move]!=" "){
 
         }else{
           game.grid.set(move, "X");
           //game.update();
           if(is_tie(game)){
             saveRecord(req,game,winner);
-          }else if((winner = checkwinner(game.grid)) == ''){
+          }else if((winner = checkwinner(game.grid)) == " "){
               //Continue move
               for (let i = 0; i < 9; i++) {
                   if(game.grid[i] === " ") {
