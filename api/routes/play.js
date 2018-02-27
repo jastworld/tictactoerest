@@ -50,7 +50,7 @@ var checkwinner = function(game){
     //check for horizontal winner
     while(i<9){
         if(game[i]==game[i+1] && game[i]==game[i+2]){
-            if(game[i]=='')
+            if(game[i]==" ")
                 break;
             else
                 return game[i];
@@ -72,7 +72,7 @@ var checkwinner = function(game){
     //Diagonal winner
     if(game[0]==game[4] && game[0]==game[8])
         return game[0];
-    if(game[2]==game[4] && game[0]==game[6])
+    if(game[2]==game[4] && game[2]==game[6])
         return game[2];
     return " ";
 };
