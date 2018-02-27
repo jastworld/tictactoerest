@@ -4,7 +4,7 @@ const Game = require('../../models/Game');
 const Record = require('../../models/Record');
 
 
-var is_tie = (game)=>{
+var is_tie = function(game){
     for(i=0;i<9;i++){
       if(game.grid[i]===""){
         console.log("No tie space dey");
@@ -16,7 +16,7 @@ var is_tie = (game)=>{
 };
 
 
-var saveRecord = (req,game,winner)=>{
+var saveRecord = function(req,game,winner){
   var record = new Record({
     userId: req.session.user._id,
     grid: game.grid,
@@ -45,7 +45,7 @@ var saveRecord = (req,game,winner)=>{
                 "","",""];
   return true;
 };
-var checkwinner = (game)=>{
+var checkwinner = function(game){
     var i=0;
     //check for horizontal winner
     while(i<9){
@@ -76,31 +76,9 @@ var checkwinner = (game)=>{
         return game[2];
     return "";
 };
-router.post('/rrr',(req,res,next)=>{
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); // If needed
-    res.setHeader('Access-Control-Allow-Credentials', true); // If needed
-    console.log(req.body);
-    const game = {
-        grid: req.body
-    }
-    for (let i = 0; i < 9; i++) {
-        if (game.grid[i] === "") {
-            game.grid[i] = "O";
-            break;
-        }
-    }
-    checkwinner(game.grid);
-    console.log(req.body);
-    return res.status(200).json({
-        grid: game.grid,
-        winner: checkwinner(game.grid)
-    });
 
-});
 
-router.get('/',(req,res,next)=>{
+router.get('/',function(req,res,next){
     res.render('index',{title:"Tic Tac Toe"});
     console.log("Max age: "+req.session.cookie.originalMaxAge);
     if(req.session.user){
@@ -114,7 +92,7 @@ router.get('/',(req,res,next)=>{
 
 });
 
-router.post('/',(req,res,next)=>{
+router.post('/',function(req,res,next){
     var winner="";
 
     if(req.session.user){

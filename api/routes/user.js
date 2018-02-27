@@ -5,7 +5,7 @@ const User = require('../../models/User');
 const Game = require('../../models/Game');
 const Record = require('../../models/Record');
 
-router.post('/adduser',(req,res,next)=>{
+router.post('/adduser',function(req,res,next){
   //{ username:, password:, email: }
   console.log(req.body);
   var newUser = new User({
@@ -53,7 +53,7 @@ router.post('/adduser',(req,res,next)=>{
 
 });
 
-router.post("/verify",(req,res,next)=>{
+router.post("/verify",function(req,res,next){
   //{ email:, key: }
   if(req.body.key == "abracadabra"){
     User.findOne({ email: req.body.email }, function(err, user) {
@@ -79,7 +79,7 @@ router.post("/verify",(req,res,next)=>{
 });
 
 
-router.get("/verify",(req,res,next)=>{
+router.get("/verify",function(req,res,next){
   //{ email:, key: }
   if(req.query.key == "abracadabra"){
     User.findOne({ email: req.query.email }, function(err, user) {
@@ -105,7 +105,7 @@ router.get("/verify",(req,res,next)=>{
 });
 
 
-router.post("/login",(req,res,next)=>{
+router.post("/login",function(req,res,next){
   ///login, { username:, password: }
     User.findOne({ username: req.body.username }, function(err, user) {
       console.log(user);
@@ -133,13 +133,13 @@ router.post("/login",(req,res,next)=>{
 });
 
 
-router.post("/logout",(req,res,next)=>{
+router.post("/logout",function(req,res,next){
     req.session.cookie.expires = new Date(Date.now() - 1);
     return res.json({status:"OK" });
 });
 
 
-router.post("/listgames",(req,res,next)=>{
+router.post("/listgames",function(req,res,next){
     if(req.session.user){
       var recordArray = [];
       Record.find({userId: req.session.user._id},(err,records)=>{
@@ -163,7 +163,7 @@ router.post("/listgames",(req,res,next)=>{
 
 });
 
-router.post("/getgame",(req,res,next)=>{
+router.post("/getgame",function(req,res,next){
 
     if(req.session.user){
       Record.findOne({ _id: req.body.id }, function(err, record) {
@@ -188,7 +188,7 @@ router.post("/getgame",(req,res,next)=>{
 });
 
 
-router.post("/getscore",(req,res,next)=>{
+router.post("/getscore",function(req,res,next){
 
     if(req.session.user){
       var wins=0;
@@ -209,10 +209,6 @@ router.post("/getscore",(req,res,next)=>{
           });
         });
       });
-
-
-
-
     }else{
       return res.json({status:"ERROR"});
     }
