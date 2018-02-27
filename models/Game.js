@@ -5,9 +5,9 @@ var Schema = mongoose.Schema;
 var GameSchema = new Schema({
 	grid: {
 		type: [String],
-    default: ['','','',
-              '','','',
-              '','','']
+    default: [' ',' ',' ',
+              ' ',' ',' ',
+              ' ',' ',' ']
 	}
 },{timestamps: true}, {collection: 'game-collection'});
 

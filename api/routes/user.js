@@ -195,7 +195,7 @@ router.post("/getscore",function(req,res,next){
       Record.count({ userId: req.session.user._id, winner: 'X'},(err, doc)=>{
         wins =doc;
         var draw=0;
-        Record.count({ userId: req.session.user._id, winner: ''},(err, doc)=>{
+        Record.count({ userId: req.session.user._id, winner: ' '},(err, doc)=>{
           draw =doc;
           var loss = 0;
           Record.count({ userId: req.session.user._id, winner: 'O'},(err, doc)=>{
