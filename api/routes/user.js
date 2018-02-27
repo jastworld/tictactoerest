@@ -112,7 +112,7 @@ router.post("/login",function(req,res,next){
       if (err || user == null){
         return res.json({status:"ERROR" });
       }else if(!user.enabled){
-        return res.json({status:"OK" });
+        return res.json({status:"ERROR" });
       }else{
         user.comparePassword(req.body.password, function(err, isMatch) {
               if (err) throw err;
@@ -192,13 +192,13 @@ router.post("/getscore",function(req,res,next){
 
     if(req.session.user){
       var wins=0;
-      Record.count({ userId: req.session.user._id, winner: "X"},(err, doc)=>{
+      Record.count({ userId: req.session.user._id, winner: 'X'},(err, doc)=>{
         wins =doc;
         var draw=0;
-        Record.count({ userId: req.session.user._id, winner: ""},(err, doc)=>{
+        Record.count({ userId: req.session.user._id, winner: ''},(err, doc)=>{
           draw =doc;
           var loss = 0;
-          Record.count({ userId: req.session.user._id, winner: "O"},(err, doc)=>{
+          Record.count({ userId: req.session.user._id, winner: 'O'},(err, doc)=>{
             loss =doc;
             return res.json({
                status:"OK",
