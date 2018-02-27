@@ -37,7 +37,7 @@ router.post('/adduser',function(req,res,next){
       to: req.body.email,
       subject: 'Please confirm your account with Tic Tac Toe',
       text: 'Please use the following information for your verification \n Email:'+req.body.email+ '\nkey: abracadabra'
-            +'Or use the link: http://localhost:7000/verify?email='+req.body.email+'&key=abracadabra'
+            +'Or use the link: http://tamuneke.cse356.compas.cs.stonybrook.edu/verify?email='+req.body.email+'&key=abracadabra'
     };
       transporter.sendMail(HelperOptions, (error, info) => {
         if (error) {
