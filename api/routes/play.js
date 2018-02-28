@@ -100,6 +100,7 @@ router.post('/',function(req,res,next){
         //console.log(game.grid);
         //var currentGame = game.grid;
         var move = req.body.move;
+        gameOn = game.grid.slice();
         //Life saver
         console.log("JHFGYEHBLKFUI: jhgdfuih "+game.grid[move]+"<<<<<<<<<,");
         if(move > 8 || move == null || game.grid[move]!=" "){
