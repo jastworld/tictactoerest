@@ -16,7 +16,7 @@ var is_tie = function(game){
 };
 
 
-var saveRecord = function(req,game,winner){
+var saveRecord = function(req,game,winner,gameOn){
   var record = new Record({
     userId: req.session.user._id,
     grid: game.grid,
@@ -25,7 +25,6 @@ var saveRecord = function(req,game,winner){
   record.save();
   Record.count({userId: req.session.user._id},(err,res)=>{
       var count = res;
-
       Record.findOne({userId: req.session.user._id, recordId: 0}, (err, innerRec)=>{
         if(err){
           return false;
@@ -39,7 +38,7 @@ var saveRecord = function(req,game,winner){
         }
       });
   });
-
+  gameOn = game.grid.slice();
   game.grid = [" "," "," ",
                 " "," "," ",
                 " "," "," "];
@@ -67,7 +66,6 @@ var checkwinner = function(game){
                 return game[i];
         }
         i++;
-
     }
     //Diagonal winner
     if(game[0]==game[4] && game[0]==game[8])
@@ -93,6 +91,7 @@ router.get('/',function(req,res,next){
 });
 
 router.post('/',function(req,res,next){
+    var gameOn=[];
     var winner=" ";
 
     if(req.session.user){
@@ -102,35 +101,39 @@ router.post('/',function(req,res,next){
         //var currentGame = game.grid;
         var move = req.body.move;
         //Life saver
+        console.log("JHFGYEHBLKFUI: jhgdfuih "+game.grid[move]+"<<<<<<<<<,");
         if(move > 8 || move == null || game.grid[move]!=" "){
-
+            console.log("huefguiyruyg: hruehbuyru "+move);
         }else{
           game.grid.set(move, "X");
+          gameOn = game.grid.slice();
+          console.log("JHFGYEHBLKFUI: jhgdfuih"+gameOn);
           //game.update();
           if(is_tie(game)){
-            saveRecord(req,game,winner);
+            saveRecord(req,game,winner,gameOn);
           }else if((winner = checkwinner(game.grid)) == " "){
               //Continue move
               for (let i = 0; i < 9; i++) {
                   if(game.grid[i] === " ") {
                       game.grid.set(i, "O");
+                      gameOn = game.grid.slice();
                       break;
                   }
               }
               if(is_tie(game)){
-                saveRecord(req,game,winner);
+                saveRecord(req,game,winner,gameOn);
               }else if((winner = checkwinner(game.grid)) != " "){
                   //count loss
-                saveRecord(req,game,winner);
+                saveRecord(req,game,winner, gameOn);
               }
           }else{
-            saveRecord(req,game,winner);
+            saveRecord(req,game,winner,gameOn);
             //Count loss/win and restart game
           }
           game.save();
         }
         res.status(200).json({
-          grid: game.grid,
+          grid: gameOn,
           winner: winner
         });
       });
